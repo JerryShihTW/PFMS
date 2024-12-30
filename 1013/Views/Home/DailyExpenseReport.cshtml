@@ -1,0 +1,79 @@
+﻿@model IEnumerable<dynamic>
+
+<h2>每日支出報表</h2>
+
+<!-- 每日支出日期範圍選擇 -->
+@{
+    // 設定 DailyExpenseReport 的日期範圍為當前月份
+    var dailyStartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString("yyyy-MM-dd"); // 當前月的第一天
+    var dailyEndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)).ToString("yyyy-MM-dd"); // 當前月的最後一天
+}
+
+
+<form id="dailyDateForm" method="get" action="/Home/DailyExpenseReport">
+    <label for="dailyStartDate">開始日期:</label>
+    <input type="date" id="dailyStartDate" name="startDate" value="@dailyStartDate">
+
+    <label for="dailyEndDate">結束日期:</label>
+    <input type="date" id="dailyEndDate" name="endDate" value="@dailyEndDate">
+
+    <button type="submit">篩選</button>
+</form>
+
+@if (TempData["BudgetWarning"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["BudgetWarning"]
+    </div>
+}
+
+
+<!-- 摺線圖 -->
+<div style="width: 600px; height: 400px; margin: 0 auto;">
+    <canvas id="dailyExpensesChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var dates = @Html.Raw(Json.Serialize(Model.Select(x => x.Date.ToString("yyyy-MM-dd"))));
+    var amounts = @Html.Raw(Json.Serialize(Model.Select(x => x.TotalAmount)));
+
+    var ctx = document.getElementById('dailyExpensesChart').getContext('2d');
+    var dailyExpensesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: '每日支出',
+                data: amounts,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: '日期'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '支出金額'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+</script>

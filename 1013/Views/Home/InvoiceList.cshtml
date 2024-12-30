@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "發票清單";
+}
+@model List<Invoice>
+
+
+<h2>發票清單</h2>
+
+@using (Html.BeginForm("AddToExpenseList", "Home", FormMethod.Post))
+{
+    <!-- 提示語顯示區 -->
+    <div style="color: grey; font-size: small; margin-bottom: 10px;">
+        ✔️ 代表已選取過的發票，無法再次選擇
+    </div>
+
+    <!-- 發票日期範圍標示 -->
+    <div style="font-weight: bold; margin-bottom: 10px;">
+        顯示月份範圍：@ViewBag.CurrentYear @ViewBag.StartMonth 月 - @ViewBag.EndMonth 月
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>選擇</th>
+                <th>發票號碼</th>
+                <th>發票日期</th>
+                <th>類別</th>
+                <th>金額</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var invoice in Model)
+            {
+                var isSelected = ViewBag.SelectedInvoices != null && ViewBag.SelectedInvoices.Contains(invoice.InvoiceNumber);
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selectedInvoices[]"
+                               value="@invoice.InvoiceNumber,@invoice.InvoiceDate.ToString("yyyy-MM-dd"),@invoice.Category,@invoice.Amount" @(isSelected ? "checked='checked' disabled='disabled'" : "") />
+
+                        @if (isSelected)
+                        {
+                            <span style="color:red;">✔️</span>
+                        }
+                    </td>
+                    <td>@invoice.InvoiceNumber</td>
+                    <td>@invoice.InvoiceDate.ToString("yyyy-MM-dd")</td>
+                    <td>@invoice.Category</td>
+                    <td>@invoice.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <button type="submit">開始記帳</button>
+    </div>
+}
+
+<!-- 分頁控制按鈕 -->
+<div class="pagination mt-3">
+    <form asp-action="GetInvoices" asp-controller="Home" method="post" class="d-inline">
+        <input type="hidden" name="page" value="@(ViewBag.CurrentPage - 1)" />
+        <button type="submit" class="btn btn-primary" @(ViewBag.CurrentPage <= 1 ? "disabled" : "")>上一頁</button>
+    </form>
+
+    <span class="mx-2">頁數：@ViewBag.CurrentPage</span>
+
+    <form asp-action="GetInvoices" asp-controller="Home" method="post" class="d-inline">
+        <input type="hidden" name="page" value="@(ViewBag.CurrentPage + 1)" />
+        <button type="submit" class="btn btn-primary">下一頁</button>
+    </form>
+</div>

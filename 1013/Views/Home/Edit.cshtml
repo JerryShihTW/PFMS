@@ -1,0 +1,32 @@
+﻿@model _1013.Models.member
+
+@{
+    ViewData["Title"] = "編輯會員資料";
+}
+
+<h2>編輯會員資料</h2>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <label asp-for="account"></label>
+        <input asp-for="account" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="password"></label>
+        <input asp-for="password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="name"></label>
+        <input asp-for="name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="phone"></label>
+        <input asp-for="phone" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="mail"></label>
+        <input asp-for="mail" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">保存變更</button>
+    <a asp-action="Privacy" class="btn btn-secondary">取消</a>
+</form>

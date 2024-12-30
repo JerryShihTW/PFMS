@@ -1,0 +1,40 @@
+﻿@model _1013.Models.income
+
+@{
+    ViewData["Title"] = "編輯收入";
+}
+
+<h2>編輯收入</h2>
+
+<form asp-action="EditIncome" method="post">
+    @Html.AntiForgeryToken() <!-- 防範 CSRF 攻擊 -->
+
+    <div class="form-group">
+        <label asp-for="date"></label>
+        <input asp-for="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="amount"></label>
+        <input asp-for="amount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="category"></label>
+        <select asp-for="category" class="form-control">
+            <option value="薪水">薪水</option>
+            <option value="投資">投資</option>
+            <option value="打工">打工</option>
+            <option value="中獎">中獎</option>
+            <option value="其他">其他</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="note"></label>
+        <input asp-for="note" class="form-control" />
+    </div>
+
+    <input type="hidden" asp-for="id" /> <!-- 確保 ID 被傳送 -->
+
+    <button type="submit" class="btn btn-success">保存變更</button>
+    <a asp-action="IncomeList" class="btn btn-secondary">取消</a>
+</form>
+

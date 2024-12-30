@@ -1,0 +1,304 @@
+﻿@{
+    ViewData["Title"] = "支出記帳";
+    @model _1013.Models.expenses
+}
+<style>
+
+    
+    /* Calculator CSS */
+    /* 彈出視窗背景設置 */
+    .calculator-modal {
+        display: none; /* 初始為隱藏 */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* 黑色背景遮罩 */
+    }
+
+    /* 計算機彈窗內容設置 */
+    .calculator-content {
+        position: relative;
+        background-color: #ffffff;
+        margin: 10% auto; /* 視窗位置 */
+        padding: 20px;
+        width: 300px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 關閉按鈕設置 */
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+
+     .calculator {
+        background: #dd6f6f;
+        border-radius: 5px ;
+        padding: 5px ;
+        width: 300px ;
+        min-width: 300px ;
+        box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.4), 4px 4px 10px rgba(0, 0, 0, 0.7) ;
+    }
+
+    .output {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        position: relative;
+        background: #ffffff;
+        min-height: 50px;
+        padding: 5px;
+        margin: 0 1px 10px;
+        border-radius: 0.25rem;
+        box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .output pre {
+            text-align: right;
+            font-size: 25px;
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            width: 288px;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+    }
+
+    .output pre::-webkit-scrollbar {
+                display: none;
+    }
+
+    .output #upper {
+            color: #424242;
+            font-size: 18px;
+    }
+
+    .input {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .input button {
+            width: calc(25% - 24px);
+            height: 50px;
+            margin: 8px 12px;
+            border-radius: 50%;
+            background-color: #c05d5d;
+            box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.3), 1px 1px 5px rgba(94, 31, 31, 0.7);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            border: none;
+    }
+
+     .input button:hover {
+                background-color: #b35555;
+     }
+
+     .input button:active {
+                box-shadow: inset 1px 1px 5px rgba(94, 31, 31, 0.7), inset -1px -1px 2px rgba(255, 255, 255, 0.3);
+                color: #642929;
+     }
+
+     </style> 
+
+     
+   
+
+<h2>支出記帳</h2>
+<p>預算餘額：<strong>@ViewBag.RemainingBudget</strong></p>
+
+<form method="post" action="/Home/AddExpenses">
+    @Html.AntiForgeryToken() <!-- 加入防偽驗證令牌 -->
+
+    <div class="form-group">
+        <label for="date">日期</label>
+        <input type="date" id="date" name="date" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="amount">金額</label>
+        <input type="number" id="amount" name="amount" class="form-control" required>
+    </div>
+    <!-- 顯示/隱藏計算機的按鈕 -->
+    <button id="toggleCalculator" type="button" class="btn btn-primary">計算機</button>
+
+    <!-- 計算機彈窗區 -->
+    <div id="calculatorModal" class="calculator-modal">
+        <div class="calculator-content">
+            <!-- 關閉彈窗的按鈕 -->
+            <span id="closeCalculator" class="close">&times;</span>
+
+            <!-- 計算機功能區 -->
+            <div class="form-group">
+                <pre id="upper"></pre>
+                <pre id="lower">0</pre>
+            </div>
+            <div class="input">
+                <button onclick="pressAllClear()">AC</button>
+                <button onclick="pressNum(this)">0</button>
+                <button onclick="pressClear()"><i class="fas fa-backspace"></i></button>
+                <button onclick="pressOperator(this)">+</button>
+                <button onclick="pressNum(this)">1</button>
+                <button onclick="pressNum(this)">2</button>
+                <button onclick="pressNum(this)">3</button>
+                <button onclick="pressOperator(this)">-</button>
+                <button onclick="pressNum(this)">4</button>
+                <button onclick="pressNum(this)">5</button>
+                <button onclick="pressNum(this)">6</button>
+                <button onclick="pressOperator(this)">&times;</button>
+                <button onclick="pressNum(this)">7</button>
+                <button onclick="pressNum(this)">8</button>
+                <button onclick="pressNum(this)">9</button>
+                <button onclick="pressOperator(this)">&div;</button>
+                <button onclick="pressDot()">.</button>
+                <button onclick="pressBracket(this)">(</button>
+                <button onclick="pressBracket(this)">)</button>
+                <button id="pressEqual">=</button>
+            </div>
+        </div>
+    </div>
+
+
+   
+
+    <div class="form-group">
+        <label for="category">類別</label>
+        <select id="category" name="category" class="form-control" required>
+            <option value="食">食</option>
+            <option value="衣">衣</option>
+            <option value="住">住</option>
+            <option value="行">行</option>
+            <option value="育">育</option>
+            <option value="樂">樂</option>
+            <option value="其他">其他</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="note">備註</label>
+        <input type="text" id="note" name="note" class="form-control">
+    </div>
+
+   
+    <button type="submit" class="btn btn-primary">提交</button>
+</form>
+
+
+<script>
+
+    // 獲取按鈕和彈出視窗元素
+    const toggleButton = document.getElementById('toggleCalculator');
+    const calculatorModal = document.getElementById('calculatorModal');
+    const closeButton = document.getElementById('closeCalculator');
+
+    // 點擊按鈕顯示彈窗
+    toggleButton.addEventListener('click', function () {
+        calculatorModal.style.display = 'block';
+    });
+
+    // 點擊關閉按鈕隱藏彈窗
+    closeButton.addEventListener('click', function () {
+        calculatorModal.style.display = 'none';
+    });
+
+    // 點擊視窗外部也可隱藏
+    window.addEventListener('click', function (event) {
+        if (event.target == calculatorModal) {
+            calculatorModal.style.display = 'none';
+        }
+    });
+
+    // 計算機功能
+    let outputUpper = document.querySelector('#upper');
+    let outputLower = document.querySelector('#lower');
+
+    function pressNum(e) {
+        if (outputLower.innerHTML === '0') {
+            outputLower.innerHTML = e.innerHTML;
+        } else {
+            outputLower.innerHTML += e.innerHTML;
+        }
+    }
+
+    function pressAllClear() {
+        outputUpper.innerHTML = '';
+        outputLower.innerHTML = '0';
+    }
+
+    function pressClear() {
+        outputLower.innerHTML = outputLower.innerHTML.slice(0, -1);
+    }
+
+    document.querySelector('#pressEqual').addEventListener('click', function (e) {
+        e.preventDefault();
+        let exp = outputLower.innerHTML;
+        outputUpper.innerHTML = exp;
+        exp = exp.replace(/×/g, '*').replace(/÷/g, '/');
+        let result;
+        try {
+            result = eval(exp);
+            document.getElementById('amount').value = result;
+
+            if (result.toString().indexOf('.') !== -1) {
+                result = result.toFixed(4);
+            }
+        } catch (e) {
+            result = 'Error';
+        }
+        outputLower.innerHTML = result;
+    });
+
+    function pressOperator(e) {
+        let lastOperator = outputLower.innerHTML.slice(-1);
+        if (['+', '-', '×', '÷'].includes(lastOperator)) {
+            outputLower.innerHTML = outputLower.innerHTML.slice(0, -1) + e.innerHTML;
+        } else {
+            outputLower.innerHTML += e.innerHTML;
+        }
+    }
+
+    function pressDot() {
+        outputLower.innerHTML += '.';
+    }
+
+    function pressBracket(e) {
+        outputLower.innerHTML += e.innerHTML;
+    }
+
+    document.addEventListener('keydown', function (e) {
+        switch (e.key) {
+            case '0': pressNum(document.querySelector('button:nth-child(2)')); break;
+            case '1': pressNum(document.querySelector('button:nth-child(5)')); break;
+            case '2': pressNum(document.querySelector('button:nth-child(6)')); break;
+            case '3': pressNum(document.querySelector('button:nth-child(7)')); break;
+            case '4': pressNum(document.querySelector('button:nth-child(9)')); break;
+            case '5': pressNum(document.querySelector('button:nth-child(10)')); break;
+            case '6': pressNum(document.querySelector('button:nth-child(11)')); break;
+            case '7': pressNum(document.querySelector('button:nth-child(13)')); break;
+            case '8': pressNum(document.querySelector('button:nth-child(14)')); break;
+            case '9': pressNum(document.querySelector('button:nth-child(15)')); break;
+            case '+': pressOperator(document.querySelector('button:nth-child(4)')); break;
+            case '-': pressOperator(document.querySelector('button:nth-child(8)')); break;
+            case '*': pressOperator(document.querySelector('button:nth-child(12)')); break;
+            case '/': pressOperator(document.querySelector('button:nth-child(16)')); break;
+            case '.': pressDot(); break;
+            case '(': pressBracket(document.querySelector('button:nth-child(18)')); break;
+            case ')': pressBracket(document.querySelector('button:nth-child(19)')); break;
+            case 'Enter': e.preventDefault(); pressEqual(); break;
+            case 'Backspace': pressClear(); break;
+            case 'Escape': pressAllClear(); break;
+        }
+    });
+</script>

@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "發票記帳";
+}
+
+<h2>發票記帳</h2>
+
+<div>
+    <p>請選擇操作：</p>
+    <p>測試用可綁定之載具號碼:/H2E8WE2</p>
+    <p>測試用可綁定之載具號碼:/H8E3WA4</p>
+    <p>測試用可綁定之載具號碼:/H6E6WV5</p>
+    <p>測試用可綁定之載具號碼:/H7E7WV5</p>
+
+    <!-- 綁定載具按鈕，導向 BindInvoiceCarrier -->
+    <form method="get" action="/Home/BindInvoiceCarrier">
+        <button type="submit" class="btn btn-primary">綁定載具</button>
+    </form>
+
+    <br />
+
+    <!-- 開始發票記帳按鈕，POST 到 GetInvoices -->
+    <form method="post" action="/Home/GetInvoices">
+        <button type="submit" class="btn btn-success">已綁定載具，抓取雲端發票資料</button>
+    </form>
+</div>

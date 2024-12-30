@@ -1,0 +1,41 @@
+﻿@model _1013.Models.expenses
+
+@{
+    ViewData["Title"] = "編輯支出";
+}
+
+<h2>編輯支出</h2>
+
+<form asp-action="EditExpenses" method="post">
+    @Html.AntiForgeryToken() <!-- 防範 CSRF 攻擊 -->
+
+    <div class="form-group">
+        <label asp-for="date"></label>
+        <input asp-for="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="amount"></label>
+        <input asp-for="amount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="category"></label>
+        <select asp-for="category" class="form-control">
+            <option value="食">食</option>
+            <option value="衣">衣</option>
+            <option value="住">住</option>
+            <option value="行">行</option>
+            <option value="育">育</option>
+            <option value="樂">樂</option>
+            <option value="其他">其他</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="note"></label>
+        <input asp-for="note" class="form-control" />
+    </div>
+
+    <input type="hidden" asp-for="id" /> <!-- 確保 ID 被傳送 -->
+
+    <button type="submit" class="btn btn-success">保存變更</button>
+    <a asp-action="ExpensesList" class="btn btn-secondary">取消</a>
+</form>

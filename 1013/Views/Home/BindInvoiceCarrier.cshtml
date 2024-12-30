@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "綁定載具";
+}
+@model member
+
+<form method="post" action="/Home/BindInvoiceCarrier">
+    <div class="form-group">
+        <label for="VehicleNumber">請輸入手機載具號碼:</label>
+        <input type="text" id="invoiceCarrierNumber" name="VehicleNumber" placeholder="例如：/H6E3WV3" required>
+    <button type="submit">綁定</button>
+    </div>
+</form>
+
+   @*  <label asp-for="VehicleNumber" class="control-label"></label>
+    <input asp-for="VehicleNumber" class="form-control"  />
+    <span asp-validation-for="VehicleNumber" class="text-danger"></span> *@

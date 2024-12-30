@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "編輯載具";
+    Layout = "_Layout2";
+}
+
+
+
+
+@model member
+
+<h2>編輯載具</h2>
+
+<form asp-action="EditInvoiceCarrier" method="post">
+    <div class="form-group">
+        <label asp-for="VehicleNumber"></label>
+        <input asp-for="VehicleNumber" class="form-control" />
+        <span asp-validation-for="VehicleNumber" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for=" account" />
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

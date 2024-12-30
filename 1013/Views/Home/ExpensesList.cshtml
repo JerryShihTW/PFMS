@@ -1,0 +1,64 @@
+﻿
+
+<h2>支出清單</h2>
+
+<form asp-action="ExpensesList" method="get" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="startDate" class="mr-2">開始日期</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" value="@Context.Request.Query["startDate"]" />
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="endDate" class="mr-2">結束日期</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" value="@Context.Request.Query["endDate"]" />
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">篩選</button>
+</form>
+
+<p>選定日期範圍的金額總和：<strong>@ViewBag.TotalAmount</strong></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>金額</th>
+            <th>類別</th>
+            <th>備註</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expense in Model)
+        {
+            <tr>
+                <td>@expense.date.ToShortDateString()</td>
+                <td>@expense.amount</td>
+                <td>@expense.category</td>
+                <td>@expense.note</td>
+                <td>
+                    <a asp-action="EditExpenses" asp-route-id="@expense.id" class="btn btn-primary">編輯</a>
+                    <form asp-action="DeleteExpenses" asp-route-id="@expense.id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這筆記錄嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- 分頁按鈕 -->
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" asp-action="ExpensesList" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-startDate="@Context.Request.Query["startDate"]" asp-route-endDate="@Context.Request.Query["endDate"]">上一頁</a>
+        </li>
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-action="ExpensesList" asp-route-page="@i" asp-route-startDate="@Context.Request.Query["startDate"]" asp-route-endDate="@Context.Request.Query["endDate"]">@i</a>
+            </li>
+        }
+        <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+            <a class="page-link" asp-action="ExpensesList" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-startDate="@Context.Request.Query["startDate"]" asp-route-endDate="@Context.Request.Query["endDate"]">下一頁</a>
+        </li>
+    </ul>
+</nav>

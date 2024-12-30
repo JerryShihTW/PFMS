@@ -1,0 +1,126 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    /* 等大圖表樣式 */
+    .chart-container {
+        width: 100%;
+        height: 50%; /* 每個圖表佔左側區域的 50% */
+        margin-bottom: 10px;
+    }
+
+    .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+    .form-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 50%; /* 占左側區域的 50% */
+        margin-bottom: 10px;
+        background-color: #f4f4f4; /* 可選：設定背景色以與 chart-container 保持一致 */
+    }
+
+    @@media (max-width: 768px) {
+    .chart-container {
+        height: 45vh; /* 每個圖表佔螢幕的 45% */
+        margin-bottom: 15px;
+    }
+
+    .form-section {
+        height: 45vh; /* 支出區域高度與圖表一致 */
+    }
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<main>
+    <div class="container">
+        <!-- 左側固定內容區域 -->
+        <div class="left-pane">
+            <div class="chart-container">
+                <canvas id="incomeExpenseChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
+            </div>
+            
+    </div>
+</main>
+
+<script>
+    // Mock data
+    let totalIncome = @ViewBag.TotalIncome;
+    let totalExpense = @ViewBag.TotalExpense;;
+    let budgetLimit = @ViewBag.BudgetLimit;;
+
+    // Function to update charts
+    function updateCharts() {
+        incomeExpenseChart.data.datasets[0].data = [totalIncome, totalIncome - totalExpense];
+        budgetChart.data.datasets[0].data = [totalExpense, budgetLimit - totalExpense];
+        incomeExpenseChart.update();
+        budgetChart.update();
+    }
+
+
+    // Initialize the income-expense chart
+    const incomeExpenseChartCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+    const incomeExpenseChart = new Chart(incomeExpenseChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['本月支出', '錢包剩餘'],
+            datasets: [{
+                data: [totalExpense, totalIncome - totalExpense],
+                backgroundColor: ['#3cba9f', '#f4c20d'],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,  // 允許自適應比例
+            plugins: {
+                title: {
+                    display: true,
+                    text: `月結餘: $${totalIncome - totalExpense}`
+                }
+            }
+        }
+    });
+
+
+
+    // Initialize the budget chart
+    
+    const budgetChartCtx = document.getElementById('budgetChart').getContext('2d');
+    const budgetChart = new Chart(budgetChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['已使用', '剩餘預算'],
+            datasets: [{
+                data: [totalExpense, budgetLimit - totalExpense],
+                backgroundColor: ['#ff6384', '#36a2eb'],
+            }]
+        },
+        options: {
+            responsive: true,    // 確保圖表隨容器調整大小
+            maintainAspectRatio: false,  // 允許自適應比例
+            plugins: {
+                title: {
+                    display: true,
+                    text: `剩餘預算: $${budgetLimit - totalExpense}`
+                }
+            }
+        }
+    });
+    
+
+
+
+</script>

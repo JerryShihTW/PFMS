@@ -1,0 +1,33 @@
+﻿@model _1013.Models.income
+
+@{
+    ViewData["Title"] = "編輯會員資料";
+}
+
+<h2>編輯會員資料</h2>
+
+<form asp-action="TryEdit">
+    <div class="form-group">
+        <label asp-for="id"></label>
+        <input asp-for="id" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="date"></label>
+        <input asp-for="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="amount"></label>
+        <input asp-for="amount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="category"></label>
+        <input asp-for="category" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="note"></label>
+        <input asp-for="note" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">保存變更</button>
+    <a asp-action="Try" class="btn btn-secondary">取消</a>
+</form>
+

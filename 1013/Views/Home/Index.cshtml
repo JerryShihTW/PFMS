@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "個人理財記帳系統";
+    Layout = "_Layout1";
+}
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="text-center text-white">
+                    <!-- Page heading-->
+                    <h1 class="mb-5">歡迎來到個人理財記帳系統</h1>
+                    <!-- Signup form-->
+                    <!-- * * * * * * * * * * * * * * *-->
+                    <!-- * * SB Forms Contact Form * *-->
+                    <!-- * * * * * * * * * * * * * * *-->
+                    <!-- This form is pre-integrated with SB Forms.-->
+                    <!-- To make this form functional, sign up at-->
+                    <!-- https://startbootstrap.com/solution/contact-forms-->
+                    <!-- to get an API token!-->
+                    <form class="form-subscribe" id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <!-- Email address input-->
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control form-control-lg" id="emailAddress" type="email" placeholder="Email Address" data-sb-validations="required,email" />
+                                <div class="invalid-feedback text-white" data-sb-feedback="emailAddress:required">電子郵件地址為必填</div>
+                                <div class="invalid-feedback text-white" data-sb-feedback="emailAddress:email">電子郵件無效</div>
+                            </div>
+                            <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">訂閱</button></div>
+                        </div>
+                        <!-- Submit success message-->
+                        <!---->
+                        <!-- This is what your users will see when the form-->
+                        <!-- has successfully submitted-->
+                        <div class="d-none" id="submitSuccessMessage">
+                            <div class="text-center mb-3">
+                                <div class="fw-bolder">送出成功!</div>
+                                <p>To activate this form, sign up at</p>
+                                <a class="text-white" href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                            </div>
+                        </div>
+                        <!-- Submit error message-->
+                        <!---->
+                        <!-- This is what your users will see when there is-->
+                        <!-- an error submitting the form-->
+                        <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">發送訊息時出錯!</div></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!--介紹一版面分三等分-->
+<section class="features-icons bg-light text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi bi-piggy-bank m-auto text-primary"></i></div>
+                    <h3>減少財務壓力</h3>
+                    <p class="lead mb-0">養成儲蓄習慣可以有效減少財務壓力，避免超支。</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi bi-cash-coin m-auto text-primary"></i></div>
+                    <h3>提高資產增值</h3>
+                    <p class="lead mb-0">透過合理的投資與理財策略，能讓資產增值，獲得更多收益。</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi bi-bank m-auto text-primary"></i></div>
+                    <h3>實現生活目標</h3>
+                    <p class="lead mb-0">透過理財能幫助實現人生的重大財務目標。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--介紹二版面左右各一-->
+<section class="showcase">
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('assets/img/理財1.jpg')"></div>
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>記帳功能</h2>
+                <p class="lead mb-0">記帳功能可以幫助使用者記錄每日的收入與支出，詳細追蹤金錢流向，了解自己的消費習慣。透過分類管理，使用者能夠快速查閱每項支出的用途，進一步優化個人財務狀況，達成理財目標。</p>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-lg-6 text-white showcase-img" style="background-image: url('assets/img/理財2.jpg')"></div>
+            <div class="col-lg-6 my-auto showcase-text">
+                <h2>預算管理</h2>
+                <p class="lead mb-0">預算管理功能可協助使用者設定每月或每週的支出上限，監控花費情況，避免超支。透過分析報告，使用者能了解支出趨勢，優化財務規劃，提升儲蓄效率。</p>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('assets/img/理財3.jpg')"></div>
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>財務目標設定</h2>
+                <p class="lead mb-0">這個功能讓使用者設定短期或長期的財務目標，如儲蓄、旅行或購買大件物品。系統將根據使用者的預算與支出情況，提供建議的每月儲蓄額，並追蹤進度，確保使用者按時達成目標。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--團隊成員介紹-->
+<section class="testimonials text-center bg-light">
+    <div class="container">
+        <h2 class="mb-5">團隊成員</h2>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="assets/img/圖片1.jpg" alt="Mr. 史" />
+                    <h5>史唯成</h5>
+                    <p class="font-weight-light mb-0">Trainee Software Engineer</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="assets/img/圖片2.jpg" alt="Miss 熊" />
+                    <h5>Ja-ling</h5>
+                    <p class="font-weight-light mb-0">Trainee Software Engineer</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="assets/img/圖片3.jpg" alt="Mr. 李" />
+                    <h5>李碩員</h5>
+                    <p class="font-weight-light mb-0">Trainee Software Engineer</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="assets/img/圖片4.jpg" alt="Miss 楊" />
+                    <h5>楊小B</h5>
+                    <p class="font-weight-light mb-0">Trainee Software Engineer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* <!-- Call to Action-->
+<section class="call-to-action text-white text-center" id="signup">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <h2 class="mb-4">Ready to get started? Sign up now!</h2>
+                <!-- Signup form-->
+                <!-- * * * * * * * * * * * * * * *-->
+                <!-- * * SB Forms Contact Form * *-->
+                <!-- * * * * * * * * * * * * * * *-->
+                <!-- This form is pre-integrated with SB Forms.-->
+                <!-- To make this form functional, sign up at-->
+                <!-- https://startbootstrap.com/solution/contact-forms-->
+                <!-- to get an API token!-->
+                <form class="form-subscribe" id="contactFormFooter" data-sb-form-api-token="API_TOKEN">
+                    <!-- Email address input-->
+                    <div class="row">
+                        <div class="col">
+                            <input class="form-control form-control-lg" id="emailAddressBelow" type="email" placeholder="Email Address" data-sb-validations="required,email" />
+                            <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:required">Email Address is required.</div>
+                            <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:email">Email Address Email is not valid.</div>
+                        </div>
+                        <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                    </div>
+                    <!-- Submit success message-->
+                    <!---->
+                    <!-- This is what your users will see when the form-->
+                    <!-- has successfully submitted-->
+                    <div class="d-none" id="submitSuccessMessage">
+                        <div class="text-center mb-3">
+                            <div class="fw-bolder">Form submission successful!</div>
+                            <p>To activate this form, sign up at</p>
+                            <a class="text-white" href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                        </div>
+                    </div>
+                    <!-- Submit error message-->
+                    <!---->
+                    <!-- This is what your users will see when there is-->
+                    <!-- an error submitting the form-->
+                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section> *@

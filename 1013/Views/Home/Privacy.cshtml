@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+    Layout = "_Layout2";
+}
+
+@using _1013.Models;
+
+<h2>帳號清單</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>帳號</th>
+            <th>密碼</th>
+            <th>姓名</th>
+            <th>電話</th>
+            <th>信箱</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.account</td>
+                <td>@item.password</td>
+                <td>@item.name</td>
+                <td>@item.phone</td>
+                <td>@item.mail</td>
+                <td>
+                    <!-- 編輯按鈕 -->
+                    <a asp-action="Edit" asp-route-account="@item.account" class="btn btn-primary">編輯</a>
+                    <!-- 刪除按鈕 -->
+                    <form asp-action="Delete" asp-route-account="@item.account" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這個帳號嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

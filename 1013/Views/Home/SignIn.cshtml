@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "_Layout1";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>登入</h2>
+                </div>
+                <div class="card-body">
+                    <form id="signInForm" method="post" action="/Home/SignIn">
+                        <div class="form-group">
+                            <label for="username">帳號</label>
+                            <input type="text" id="username" name="username" required class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密碼</label>
+                            <input type="password" id="password" name="password" required class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="verificationCode">驗證碼: @ViewBag.VerificationCode</label>
+                            <input type="text" id="inputVerificationCode" name="inputVerificationCode" required class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-3">登入</button>
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger mt-3">@ViewBag.ErrorMessage</div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#signInForm").validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 3
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                inputVerificationCode: {
+                    required: true,
+                    digits: true,
+                    minlength: 4,
+                    maxlength: 4
+                }
+            },
+            messages: {
+                username: {
+                    required: "請輸入帳號",
+                    minlength: "帳號至少需要3個字符"
+                },
+                password: {
+                    required: "請輸入密碼",
+                    minlength: "密碼至少需要6個字符"
+                },
+                inputVerificationCode: {
+                    required: "請輸入驗證碼",
+                    digits: "驗證碼必須是數字",
+                    minlength: "驗證碼必須是4位數",
+                    maxlength: "驗證碼必須是4位數"
+                }
+            },
+            errorElement: "div",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+    });
+</script>
+
+

@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "新增成功";
+}
+
+<h2>新增成功</h2>
+
+@if (TempData["BudgetWarning"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["BudgetWarning"]
+    </div>
+}
+
+
+<p>您的支出記錄已成功新增！</p>
+
+<a href="@Url.Action("AddExpenses", "Home")" class="btn btn-primary">返回支出記帳</a>
+
+<script>
+    // 檢查 TempData 中是否有預算警告
+    var budgetWarning = '@TempData["BudgetWarning"]';
+    if (budgetWarning) {
+        // 定義一組隨機消息
+        var randomMessages = [
+            "小心！本月預算已超支！",
+            "注意：您的支出已超過預算！",
+            "警告：您已經超過了本月的預算限制！",
+            "請檢查您的支出，已達預算上限！"
+        ];
+
+        // 隨機選擇一條消息
+        var randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+
+        // 顯示隨機消息的彈出視窗
+        alert(randomMessage);
+    }
+</script>

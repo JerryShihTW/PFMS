@@ -1,0 +1,136 @@
+﻿@model IEnumerable<dynamic>
+
+
+/* 讓頁面在手機上顯示更佳的CSS調整 */
+<style>
+    /* 讓圓餅圖在手機上自適應寬度 */
+    #categoryChart {
+        max-width: 100%;
+        height: auto; 
+    }
+    /* 日期區間表單容器的調整 */
+    form#dateForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    /* 表格的排版調整 */
+    .table {
+        width: 100%;
+        overflow-x: auto; /* 允許在小螢幕上橫向滾動 */
+    }
+    /* 手機螢幕的特定調整 */
+    @@media (max-width: 768px) {
+        .table th, .table td {
+            font-size: 0.9em;
+            padding: 8px;
+        }
+        #categoryChart {
+            height: 250px; /* 減少高度以適應小螢幕 */
+        }
+    }
+</style>
+
+
+<h2>支出類別報表</h2>
+
+
+<!-- 日期區間選擇欄位 -->
+@{
+    var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString("yyyy-MM-dd");
+    var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)).ToString("yyyy-MM-dd");
+}
+
+<form id="dateForm" method="get" action="/Home/CategoryReport">
+    <label for="startDate">開始日期:</label>
+    <input type="date" id="startDate" name="startDate" value="@startDate">
+
+    <label for="endDate">結束日期:</label>
+    <input type="date" id="endDate" name="endDate" value="@endDate">
+
+    <button type="submit">篩選</button>
+</form>
+
+@if (TempData["BudgetWarning"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["BudgetWarning"]
+    </div>
+}
+
+
+
+<!-- 表格顯示支出報表 -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>類別</th>
+            <th>總金額</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Category</td>
+                <td>@item.TotalAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- 圓餅圖容器 -->
+<div style="width: 400px; height: 400px; margin: 0 auto;">
+    <!-- 設置容器的大小並居中 -->
+    <canvas id="categoryChart"></canvas>
+</div>
+
+<!-- 引入Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 從後端傳遞資料到前端
+    var categories = @Html.Raw(Json.Serialize(Model.Select(x => x.Category)));
+    var amounts = @Html.Raw(Json.Serialize(Model.Select(x => x.TotalAmount)));
+
+    // 使用Chart.js來顯示圓餅圖
+    var ctx = document.getElementById('categoryChart').getContext('2d');
+    var categoryChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: '支出類別',
+                data: amounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',  // 亮紅色
+                    'rgba(54, 162, 235, 0.6)',   // 藍色
+                    'rgba(255, 206, 86, 0.6)',   // 黃色
+                    'rgba(75, 192, 192, 0.6)',   // 青色
+                    'rgba(153, 102, 255, 0.6)',  // 紫色
+                    'rgba(255, 159, 64, 0.6)',   // 橙色
+                    'rgba(128, 0, 128, 0.6)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(128, 0, 128, 0.6)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // 禁用維持原比例
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+</script>

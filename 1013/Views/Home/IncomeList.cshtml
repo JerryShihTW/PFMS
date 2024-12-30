@@ -1,0 +1,44 @@
+﻿<h2>收入清單</h2>
+
+<form asp-action="IncomeList" method="get" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="startDate" class="mr-2">開始日期</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" value="@Context.Request.Query["startDate"]" />
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="endDate" class="mr-2">結束日期</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" value="@Context.Request.Query["endDate"]" />
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">篩選</button>
+</form>
+
+<p>選定日期範圍的金額總和：<strong>@ViewBag.TotalAmount</strong></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>金額</th>
+            <th>類別</th>
+            <th>備註</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var income in Model)
+        {
+            <tr>
+                <td>@income.date.ToShortDateString()</td>
+                <td>@income.amount</td>
+                <td>@income.category</td>
+                <td>@income.note</td>
+                <td>
+                    <a asp-action="EditIncome" asp-route-id="@income.id" class="btn btn-primary">編輯</a>
+                    <form asp-action="DeleteIncome" asp-route-id="@income.id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這筆記錄嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

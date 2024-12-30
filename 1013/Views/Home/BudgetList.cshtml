@@ -1,0 +1,41 @@
+﻿<h2>預算清單</h2>
+
+<form asp-action="BudgetList" method="get" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="startDate" class="mr-2">開始日期</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" value="@Context.Request.Query["startDate"]" />
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="endDate" class="mr-2">結束日期</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" value="@Context.Request.Query["endDate"]" />
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">篩選</button>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>金額</th>
+            <th>起始日期</th>
+            <th>結束日期</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Budget in Model)
+        {
+            <tr>
+                <td>@Budget.amount</td>
+                <td>@Budget.startdate.ToShortDateString()</td>
+                <td>@Budget.enddate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="EditBudget" asp-route-id="@Budget.id" class="btn btn-primary">編輯</a>
+                    <form asp-action="DeleteBudget" asp-route-id="@Budget.id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這筆記錄嗎？');">刪除</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
